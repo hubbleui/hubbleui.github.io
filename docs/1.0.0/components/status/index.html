@@ -137,11 +137,11 @@
 		    	</li>
 		     
 		    </ul>
-		 					    <div class="title-wrap js-collapse " data-collapse-target="components">
+		 					    <div class="title-wrap js-collapse active" data-collapse-target="components">
 		        <h6>Components</h6>
 		        <span class="icon glyph-icon glyph-icon-chevron-down"></span>
 		    </div>
-		    <ul class="list-unstyled collapsed" id="components">
+		    <ul class="list-unstyled " id="components">
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/components/badges/">
 		    			Badges		    		</a>
@@ -219,7 +219,7 @@
 		    			Spinners		    		</a>
 		    	</li>
 		    		    			    	<li>
-		    		<a class="" href="/docs/1.0.0/components/status/">
+		    		<a class="active" href="/docs/1.0.0/components/status/">
 		    			Status		    		</a>
 		    	</li>
 		    		    			    	<li>
@@ -236,17 +236,17 @@
 		    	</li>
 		     
 		    </ul>
-		 					    <div class="title-wrap js-collapse active" data-collapse-target="javascript">
+		 					    <div class="title-wrap js-collapse " data-collapse-target="javascript">
 		        <h6>JavaScript</h6>
 		        <span class="icon glyph-icon glyph-icon-chevron-down"></span>
 		    </div>
-		    <ul class="list-unstyled " id="javascript">
+		    <ul class="list-unstyled collapsed" id="javascript">
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/introduction/">
 		    			Introduction		    		</a>
 		    	</li>
 		    		    			    	<li>
-		    		<a class="active" href="/docs/1.0.0/javascript/modules/">
+		    		<a class="" href="/docs/1.0.0/javascript/modules/">
 		    			Modules		    		</a>
 		    	</li>
 		    		    			    	<li>
@@ -291,314 +291,44 @@
 	    </button>
 	</div>
 	<article class="docs-body">
-		<h1>Modules</h1>
+		<h1>Status</h1>
+
 <hr>
 
 <ul class="list-bullet">
-    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="welcome" data-waypoint-speed="400">Overview</a></li>
-    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="usage" data-waypoint-speed="500">Usage</a></li>
-    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="create" data-waypoint-speed="700">Creating modules</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="example" data-waypoint-speed="400">Basic example</a></li>
 </ul>
 
 <hr>
 
-<div class="row roof-xs floor-xs" data-waypoint="welcome">
-    <h2>Overview</h2>
+<div class="row roof-xs floor-xs" data-waypoint="example">
+    <h2>Basic example</h2>
     <p>
-        Hubble's modules are unique and manager by a module loader. The module load is the only variable available in the global namespace. 
-        All other components, variables and objects are held within the module loader. It works in a similar way to an IOC container.
+        Use the <code>.status</code> class to indicate a status
     </p>
-</div>
 
-<hr>
-
-<div class="row roof-xs floor-xs" data-waypoint="usage">
-    <h2>Usage</h2>
-    <p>
-        To set a key pair via the module loader use the <code>Modules.set();</code> method.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
+    <div class="code-content-example">
+        <div class="container-fuid"> 
+            <span class="status"></span>
+            <span class="status status-primary"></span>
+            <span class="status status-info"></span>
+            <span class="status status-success"></span>
+            <span class="status status-warning"></span>
+            <span class="status status-danger"></span>
+        </div>
+    </div>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
 <!--
-var bar = 'bar';
-Modules.set('foo', bar);
--->
-</code></pre>
-    <p>
-        You can also set objects and arrays via the module loader.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myArray = ['foo', 'bar'];
-var myObj   = { foo : 'bar'};
-Modules.set('myObj', myObj);
-Modules.set('myArray', myArray);
--->
-</code></pre>
-    <p>
-        You can also set a class object as a key pair. This is useful for a utility module that gets reused multiple times. 
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = function() {
-    this.example = function() {
-        console.log('foobar');
-    }
-    return this;
-}
-Modules.set('myClass', myClass);
--->
-</code></pre>
-    <blockquote class="bq-warning">
-        <p>
-            When you set a class using <code>set();</code>, the class is <strong>NOT</strong> invoked by the container until you retrieve it 
-            via the key. You will <strong>ALWAYS</strong> receive a new instance of the class object.
-        </p>
-    </blockquote>
-    <p>
-        The <code>singleton();</code> method ensures you always get the same global instance of a class object back. 
-        This is useful for a global module that needs to be accessed by multiple times from different environments.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = function() {
-    this.example = function() {
-        console.log('foobar');
-    }
-    return this;
-}
-Modules.singleton('myClass', myClass);
--->
-</code></pre>
-    <blockquote class="bq-warning">
-        <p>
-            When you set a class using <code>singleton</code>, the class is <strong>NOT</strong> invoked by the container 
-            until the first time you retrieve it via the key. You will <strong>ALWAYS</strong> receive a the same instance of the class object.
-        </p>
-    </blockquote>
-    <p>
-        The <code>require();</code> method returns variable, object, array, class, or class instance by key.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = Modules.require('myClass');
--->
-</code></pre>
-    <p>
-        You can pass arguments to the object constructor as well.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = function(var1, var2) {
-    this.example = function() {
-        console.log(var1);
-        console.log(var2);
-    }
-    return this;
-}
-Modules.singleton('myClass', myClass);
-
-var myClass = Modules.require('myClass', 'foo', 'bar');
-myClass.example();
-// foo
-// bar
-
--->
-</code></pre>
-
-    <p>
-        You can also use the <code>get();</code> method which is just an alias for <code>require();</code>.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = Modules.get('myClass');
--->
-</code></pre>
-
-    <p>
-        If you want a module to instantiate straight away, chain the set and get methods together.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.set('myClass').get('myClass');
-Modules.singleton('myClass').get('myClass');
-
--->
-</code></pre>
-
-    <p>
-        The <code>all();</code> method returns an object of all the key pairs in the container.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.set('foo', 'foo');
-Modules.set('bar', 'bar');
-
-var myVars = Modules.all();
-// {
-//    foo : 'foo',
-//    bar : 'bar',
-// }
--->
-</code></pre>
-
-    <p>
-        The <code>keys();</code> method returns an array of all the keys in the container.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-
-Modules.set('foo', 'foo');
-Modules.set('bar', 'bar');
-
-var myKeys = Modules.all();
-// ['foo', 'bar']
--->
-</code></pre>
-    <p>
-        The <code>has();</code> method checks if a value exists by key.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-if (Modules.has('foo')) {
-    ...
-}
--->
-</code></pre>
-    <p>
-        The <code>remove();</code> method removes a key/pair from the container.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.remove('foo');
--->
-</code></pre>
-    <blockquote class="bq-warning">
-        <p>
-            If the value is a class object and has a <code>destruct();</code> method, the container will call <code>destruct();</code> 
-            before it destroys the keypair. This is useful if a a module has <code>eventListeners</code> bound to DOM 
-            objects as this is where they should be unbound.
-        </p>
-    </blockquote>
-    <p>
-        The <code>clear();</code> method removes all key/pairs from the container.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.clear();
--->
-</code></pre>
-
-    <p>
-        The <code>refresh();</code> method removes all key/pairs from the container and reinitializes them. 
-        This is useful for large DOM changes where you want to remove unused <code>eventListeners</code>.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.refresh();
+<span class="status">1</span>
+<span class="status status-primary">2</span>
+<span class="status status-info">3</span>
+<span class="status status-success">4</span>
+<span class="status status-warning">5</span>
+<span class="status status-danger">6</span>
 -->
 </code></pre>
 
 </div>
-
-<hr>
-
-<div class="row roof-xs floor-xs" data-waypoint="create">
-    <h2>Creating modules</h2>
-    <p>
-        To create your own module, you should follow a specific class structure. 
-    </p>
-    <ul>
-        <li>Wrap the class in closure (<code>(function() { ... }());</code>) so it is not available via the global namespace.</li>
-        <li>Have a publicly callable <code>destruct();</code> method that unbinds any DOM <code>eventListeners</code></li>
-        <li>Private methods should all have <code>_</code> infront of the method name e.g. <code>_privateMethod();</code></li>
-        <li>Use the object <code>prototype</code> where possible.</li>
-    </ul>
-    <p>
-        Here is an arbitrary example that binds a click event to some nodes.
-    </p>
-
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-(function() {
-
-    // REQUIRE THE HELPER
-    /*****************************************/
-    var Helper = Modules.require('JSHelper');
-
-    // MODULE OBJECT
-    /*****************************************/
-    var ExampleClass = function() {
-        
-        // Public
-        this.foo = 'bar';
-
-        // Private
-        this._nodes = [];
-
-        // Constructor
-        this.__construct();
-        
-        return this;
-    }
-
-    // PRIVATE CONSTRUCTOR
-    /*****************************************/
-    ExampleClass.prototype.__construct = function() {
-
-        // Find all the nodes
-        this._nodes = Helper.$All('.js-btns');
-
-        // If no nodes were found, stop here
-        if (Helper.empty(this._nodes)) return;
-
-        // Loop the nodelist and bind each
-        for (var i = 0; i < this._nodes.length; i++) {
-            this._bind(this._nodes[i]);
-        }
-    }
-
-    // PUBLIC DESTRUCTOR
-    /*****************************************/
-    ExampleClass.prototype.destruct = function() {
-        for (var i = 0; i < this._nodes.length; i++) {
-            this._unbind(this._nodes[i]);
-        }
-        this._nodes = [];
-    }
-
-    // BINDER
-    /*****************************************/
-    ExampleClass.prototype._bind = function(node) {
-        Helper.addEventListener(node, 'click', this._eventHandler);
-    }
-
-    // UNBINDER
-    /*****************************************/
-    ExampleClass.prototype._unbind = function(node) {
-       Helper.removeEventListener(node, 'change', this._eventHandler);
-    }
-
-    // EVENT HANDLER
-    /*****************************************/
-    ExampleClass.prototype._eventHandler = function(e) {
-        e = e || window.event;
-        alert('You clicked a button!')
-    }
-
-    // SET IN IOC
-    /*****************************************/
-    Modules.set('ExampleClass', ExampleClass);
-
-}());
-
-// Initialize the class
-Modules.get('ExampleClass');
--->
-</code></pre>
-
-
-</div>
-
 	</article>
 </div></div>
 </div>
