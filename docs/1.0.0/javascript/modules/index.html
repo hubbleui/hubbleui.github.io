@@ -13,8 +13,8 @@
     <link rel="apple-touch-icon" type="image/png" sizes="72x72" href="http://hubbleui.github.io/build/img/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="http://hubbleui.github.io/build/img/apple-touch-icon-114x114.png">
 
-    <link rel="stylesheet" href="/build/css/hubble.min.css?v=1489543015">
-    <link rel="stylesheet" href="/build/css/theme.min.css?v=1489543015">
+    <link rel="stylesheet" href="/build/css/hubble.min.css?v=1498539174">
+    <link rel="stylesheet" href="/build/css/theme.min.css?v=1498539174">
 </head>
 
 <body>
@@ -234,16 +234,20 @@
 		    			Introduction		    		</a>
 		    	</li>
 		    		    			    	<li>
+		    		<a class="" href="/docs/1.0.0/javascript/components/">
+		    			Components		    		</a>
+		    	</li>
+		    		    			    	<li>
 		    		<a class="active" href="/docs/1.0.0/javascript/modules/">
 		    			Modules		    		</a>
 		    	</li>
 		    		    			    	<li>
-		    		<a class="" href="/docs/1.0.0/javascript/helperjs/">
-		    			HelperJS		    		</a>
-		    	</li>
-		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/events/">
 		    			Events		    		</a>
+		    	</li>
+		    		    			    	<li>
+		    		<a class="" href="/docs/1.0.0/javascript/helperjs/">
+		    			HelperJS		    		</a>
 		    	</li>
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/ajax/">
@@ -280,314 +284,145 @@
 	</div>
 	<article class="docs-body">
 		<h1>Modules</h1>
+
 <hr>
 
 <ul class="list-bullet">
-    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="welcome" data-waypoint-speed="400">Overview</a></li>
-    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="usage" data-waypoint-speed="500">Usage</a></li>
-    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="create" data-waypoint-speed="700">Creating modules</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="overview" data-waypoint-speed="400">Overview</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="funcs" data-waypoint-speed="500">Object Functions</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="singletons" data-waypoint-speed="600">Singletons</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="dom" data-waypoint-speed="700">DOM Modules</a></li>
 </ul>
 
 <hr>
 
-<div class="row roof-xs floor-xs" data-waypoint="welcome">
+<div class="row roof-xs floor-xs" data-waypoint="overview">
     <h2>Overview</h2>
     <p>
-        Hubble's modules are unique and manager by a module loader. The module load is the only variable available in the global namespace. 
-        All other components, variables and objects are held within the module loader. It works in a similar way to an IOC container.
+        When creating your own modules, there are three different build architectures to choose from:
+        <ul>
+            <li>
+                <code>Object Functions</code> - These are re-usable objects that you return a new instance every time they are called. 
+                This is useful for re-usable utility components like notifications etc...
+            </li>
+            <li>
+                <code>Singletons</code> - Singletons are objects that are instantiated once and globally unique. 
+                This is useful for utility modules that require a single instance.
+            </li>
+             <li>
+                <code>DOM Module</code> - DOM Module are "special" <code>singletons</code> that are instantiated/re-instantiated any time 
+                the DOM is manipulated and or refreshed.
+            </li>
+        </ul>
     </p>
-</div>
-
-<hr>
-
-<div class="row roof-xs floor-xs" data-waypoint="usage">
-    <h2>Usage</h2>
-    <p>
-        To set a key pair via the module loader use the <code>Modules.set();</code> method.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var bar = 'bar';
-Modules.set('foo', bar);
--->
-</code></pre>
-    <p>
-        You can also set objects and arrays via the module loader.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myArray = ['foo', 'bar'];
-var myObj   = { foo : 'bar'};
-Modules.set('myObj', myObj);
-Modules.set('myArray', myArray);
--->
-</code></pre>
-    <p>
-        You can also set a class object as a key pair. This is useful for a utility module that gets reused multiple times. 
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = function() {
-    this.example = function() {
-        console.log('foobar');
-    }
-    return this;
-}
-Modules.set('myClass', myClass);
--->
-</code></pre>
-    <blockquote class="bq-warning">
-        <p>
-            When you set a class using <code>set();</code>, the class is <strong>NOT</strong> invoked by the container until you retrieve it 
-            via the key. You will <strong>ALWAYS</strong> receive a new instance of the class object.
-        </p>
-    </blockquote>
-    <p>
-        The <code>singleton();</code> method ensures you always get the same global instance of a class object back. 
-        This is useful for a global module that needs to be accessed by multiple times from different environments.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = function() {
-    this.example = function() {
-        console.log('foobar');
-    }
-    return this;
-}
-Modules.singleton('myClass', myClass);
--->
-</code></pre>
-    <blockquote class="bq-warning">
-        <p>
-            When you set a class using <code>singleton</code>, the class is <strong>NOT</strong> invoked by the container 
-            until the first time you retrieve it via the key. You will <strong>ALWAYS</strong> receive a the same instance of the class object.
-        </p>
-    </blockquote>
-    <p>
-        The <code>require();</code> method returns variable, object, array, class, or class instance by key.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = Modules.require('myClass');
--->
-</code></pre>
-    <p>
-        You can pass arguments to the object constructor as well.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = function(var1, var2) {
-    this.example = function() {
-        console.log(var1);
-        console.log(var2);
-    }
-    return this;
-}
-Modules.singleton('myClass', myClass);
-
-var myClass = Modules.require('myClass', 'foo', 'bar');
-myClass.example();
-// foo
-// bar
-
--->
-</code></pre>
-
-    <p>
-        You can also use the <code>get();</code> method which is just an alias for <code>require();</code>.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-var myClass = Modules.get('myClass');
--->
-</code></pre>
-
-    <p>
-        If you want a module to instantiate straight away, chain the set and get methods together.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.set('myClass').get('myClass');
-Modules.singleton('myClass').get('myClass');
-
--->
-</code></pre>
-
-    <p>
-        The <code>all();</code> method returns an object of all the key pairs in the container.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.set('foo', 'foo');
-Modules.set('bar', 'bar');
-
-var myVars = Modules.all();
-// {
-//    foo : 'foo',
-//    bar : 'bar',
-// }
--->
-</code></pre>
-
-    <p>
-        The <code>keys();</code> method returns an array of all the keys in the container.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-
-Modules.set('foo', 'foo');
-Modules.set('bar', 'bar');
-
-var myKeys = Modules.all();
-// ['foo', 'bar']
--->
-</code></pre>
-    <p>
-        The <code>has();</code> method checks if a value exists by key.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-if (Modules.has('foo')) {
-    ...
-}
--->
-</code></pre>
-    <p>
-        The <code>remove();</code> method removes a key/pair from the container.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.remove('foo');
--->
-</code></pre>
-    <blockquote class="bq-warning">
-        <p>
-            If the value is a class object and has a <code>destruct();</code> method, the container will call <code>destruct();</code> 
-            before it destroys the keypair. This is useful if a a module has <code>eventListeners</code> bound to DOM 
-            objects as this is where they should be unbound.
-        </p>
-    </blockquote>
-    <p>
-        The <code>clear();</code> method removes all key/pairs from the container.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.clear();
--->
-</code></pre>
-
-    <p>
-        The <code>refresh();</code> method removes all key/pairs from the container and reinitializes them. 
-        This is useful for large DOM changes where you want to remove unused <code>eventListeners</code>.
-    </p>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
-<!--
-Modules.refresh();
--->
-</code></pre>
 
 </div>
 
 <hr>
 
-<div class="row roof-xs floor-xs" data-waypoint="create">
-    <h2>Creating modules</h2>
+<div class="row roof-xs floor-xs" data-waypoint="funcs">
+    <h2>Object Functions</h2>
+    
     <p>
-        To create your own module, you should follow a specific class structure. 
+       Below is an example of a simple <code>object function</code> style module. 
+       Notice that the arguments are passed to object constructor when the module is 
+       required.
     </p>
-    <ul>
-        <li>Wrap the class in closure (<code>(function() { ... }());</code>) so it is not available via the global namespace.</li>
-        <li>Have a publicly callable <code>destruct();</code> method that unbinds any DOM <code>eventListeners</code></li>
-        <li>Private methods should all have <code>_</code> infront of the method name e.g. <code>_privateMethod();</code></li>
-        <li>Use the object <code>prototype</code> where possible.</li>
-    </ul>
-    <p>
-        Here is an arbitrary example that binds a click event to some nodes.
-    </p>
-
 <pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
 <!--
-(function() {
-
-    // REQUIRE THE HELPER
-    /*****************************************/
-    var Helper = Modules.require('JSHelper');
-
-    // MODULE OBJECT
-    /*****************************************/
-    var ExampleClass = function() {
-        
-        // Public
-        this.foo = 'bar';
-
-        // Private
-        this._nodes = [];
-
-        // Constructor
-        this.__construct();
+(function()
+{
+    var Example = function(arg1, arg2)
+    {
+        console.log(arg1, arg2);
         
         return this;
     }
 
-    // PRIVATE CONSTRUCTOR
-    /*****************************************/
-    ExampleClass.prototype.__construct = function() {
+    Hubble.container().set('Example', Example);
 
-        // Find all the nodes
-        this._nodes = Helper.$All('.js-btns');
+    console.log( Hubble.require('Example',  'arg1', 'arg2') );
 
-        // If no nodes were found, stop here
-        if (Helper.empty(this._nodes)) return;
-
-        // Loop the nodelist and bind each
-        for (var i = 0; i < this._nodes.length; i++) {
-            this._bind(this._nodes[i]);
-        }
-    }
-
-    // PUBLIC DESTRUCTOR
-    /*****************************************/
-    ExampleClass.prototype.destruct = function() {
-        for (var i = 0; i < this._nodes.length; i++) {
-            this._unbind(this._nodes[i]);
-        }
-        this._nodes = [];
-    }
-
-    // BINDER
-    /*****************************************/
-    ExampleClass.prototype._bind = function(node) {
-        Helper.addEventListener(node, 'click', this._eventHandler);
-    }
-
-    // UNBINDER
-    /*****************************************/
-    ExampleClass.prototype._unbind = function(node) {
-       Helper.removeEventListener(node, 'change', this._eventHandler);
-    }
-
-    // EVENT HANDLER
-    /*****************************************/
-    ExampleClass.prototype._eventHandler = function(e) {
-        e = e || window.event;
-        alert('You clicked a button!')
-    }
-
-    // SET IN IOC
-    /*****************************************/
-    Modules.set('ExampleClass', ExampleClass);
-
-}());
-
-// Initialize the class
-Modules.get('ExampleClass');
+})();
 -->
 </code></pre>
 
+</div>
+
+<hr>
+
+<div class="row roof-xs floor-xs" data-waypoint="singletons">
+    <h2>Singletons</h2>
+    
+    <p>
+       Below is an example of a simple <code>singleton</code> style module. 
+       Notice that the arguments are passed to object constructor when the module is 
+       defined.
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
+<!--
+(function()
+{
+    var Example = function(arg1, arg2)
+    {
+        console.log(arg1, arg2);
+        
+        return this;
+    }
+
+    Hubble.container().singleton('Example', Example, 'arg1', 'arg2');
+
+    console.log( Hubble.require('Example') );
+
+})();
+-->
+</code></pre>
 
 </div>
 
-	</article>
+<hr>
+
+<div class="row roof-xs floor-xs" data-waypoint="dom">
+    <h2>DOM Modules</h2>
+    
+    <p>
+       Below is an example of a simple <code>dom</code> style module. 
+       Notice that the arguments are passed to object constructor when the module is 
+       defined.
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
+<!--
+(function() {
+
+    var Example = function()
+    {
+        this.construct();
+
+        return this;
+    }
+
+    Example.prototype.construct = function()
+    {       
+        // bind event listeners here
+        console.log('constructing');
+    }
+
+    Example.prototype.destruct = function()
+    {       
+        // unbind event listeners here
+        console.log('destructing');
+    }
+
+    // Registers the module as DOM component
+    Hubble.dom().register('Example', Example, true);
+
+}());
+-->
+</code></pre>
+
+</div>
+
+<hr>	</article>
 </div></div>
 </div>
 
@@ -652,8 +487,8 @@ Modules.get('ExampleClass');
 </footer>
 
 <div class="sidebar-overlay js-sidebar-overlay"></div>
-<script src="/build/js/hubble.min.js?v=1489543015"></script>
-<script src="/build/js/theme.min.js?v=1489543015"></script>
+<script src="/build/js/hubble.min.js?v=1498539174"></script>
+<script src="/build/js/theme.min.js?v=1498539174"></script>
 
 </body>
 

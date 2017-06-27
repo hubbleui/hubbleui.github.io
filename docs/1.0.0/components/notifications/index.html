@@ -13,8 +13,8 @@
     <link rel="apple-touch-icon" type="image/png" sizes="72x72" href="http://hubbleui.github.io/build/img/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="http://hubbleui.github.io/build/img/apple-touch-icon-114x114.png">
 
-    <link rel="stylesheet" href="/build/css/hubble.min.css?v=1489543015">
-    <link rel="stylesheet" href="/build/css/theme.min.css?v=1489543015">
+    <link rel="stylesheet" href="/build/css/hubble.min.css?v=1498539174">
+    <link rel="stylesheet" href="/build/css/theme.min.css?v=1498539174">
 </head>
 
 <body>
@@ -234,16 +234,20 @@
 		    			Introduction		    		</a>
 		    	</li>
 		    		    			    	<li>
+		    		<a class="" href="/docs/1.0.0/javascript/components/">
+		    			Components		    		</a>
+		    	</li>
+		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/modules/">
 		    			Modules		    		</a>
 		    	</li>
 		    		    			    	<li>
-		    		<a class="" href="/docs/1.0.0/javascript/helperjs/">
-		    			HelperJS		    		</a>
-		    	</li>
-		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/events/">
 		    			Events		    		</a>
+		    	</li>
+		    		    			    	<li>
+		    		<a class="" href="/docs/1.0.0/javascript/helperjs/">
+		    			HelperJS		    		</a>
 		    	</li>
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/ajax/">
@@ -307,9 +311,12 @@
             Show Notification
         </button>
         <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelector('.js-notif-trigger-1').addEventListener('click', function () {
-                    Modules.require('Notifications', {
+            document.addEventListener('DOMContentLoaded', function()
+            {
+                document.querySelector('.js-notif-trigger-1').addEventListener('click', function ()
+                {
+                    Hubble.require('Notifications',
+                    {
                         type : 'success',
                         msg  : 'Hello! I\'m a notification.',
                     });
@@ -319,7 +326,7 @@
     </div>
 <pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
 <!--
-Modules.require('Notifications', {
+Hubble.require('Notifications', {
     type : 'success',
     msg  : 'Hello! I\'m a notification.',
 });
@@ -343,7 +350,7 @@ Modules.require('Notifications', {
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function() {
                 document.querySelector('.js-notif-trigger-2').addEventListener('click', function () {
-                    Modules.require('Notifications', {
+                    Hubble.require('Notifications', {
                         type           : 'default',
                         msg            : 'Are you POSITIVE you want to do this?',
                         isCallback     :  true,
@@ -364,7 +371,7 @@ Modules.require('Notifications', {
     </div>
 <pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
 <!--
-Modules.require('Notifications', {
+Hubble.require('Notifications', {
     type           : 'primary',
     msg            : 'Are you POSITIVE you want to do this?',
     isCallback     :  true,
@@ -517,8 +524,8 @@ Modules.require('Notifications', {
 </footer>
 
 <div class="sidebar-overlay js-sidebar-overlay"></div>
-<script src="/build/js/hubble.min.js?v=1489543015"></script>
-<script src="/build/js/theme.min.js?v=1489543015"></script>
+<script src="/build/js/hubble.min.js?v=1498539174"></script>
+<script src="/build/js/theme.min.js?v=1498539174"></script>
 
 </body>
 
