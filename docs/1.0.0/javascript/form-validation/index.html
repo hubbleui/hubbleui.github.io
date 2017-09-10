@@ -13,8 +13,8 @@
     <link rel="apple-touch-icon" type="image/png" sizes="72x72" href="http://hubbleui.github.io/build/img/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="http://hubbleui.github.io/build/img/apple-touch-icon-114x114.png">
 
-    <link rel="stylesheet" href="/build/css/hubble.min.css?v=1498553515">
-    <link rel="stylesheet" href="/build/css/theme.min.css?v=1498553515">
+    <link rel="stylesheet" href="/build/css/hubble.min.css?v=1505022138">
+    <link rel="stylesheet" href="/build/css/theme.min.css?v=1505022138">
 </head>
 
 <body>
@@ -246,20 +246,24 @@
 		    			Events		    		</a>
 		    	</li>
 		    		    			    	<li>
-		    		<a class="" href="/docs/1.0.0/javascript/helperjs/">
-		    			HelperJS		    		</a>
+		    		<a class="" href="/docs/1.0.0/javascript/dynamic-ui/">
+		    			Dynamic UI		    		</a>
 		    	</li>
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/ajax/">
 		    			Ajax		    		</a>
 		    	</li>
 		    		    			    	<li>
-		    		<a class="" href="/docs/1.0.0/javascript/input-masker/">
-		    			Input masker		    		</a>
+		    		<a class="" href="/docs/1.0.0/javascript/helperjs/">
+		    			HelperJS		    		</a>
 		    	</li>
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/form-validation/">
 		    			Form validation		    		</a>
+		    	</li>
+		    		    			    	<li>
+		    		<a class="" href="/docs/1.0.0/javascript/input-masker/">
+		    			Input masker		    		</a>
 		    	</li>
 		     
 		    </ul>
@@ -390,6 +394,20 @@ if (!formValidator.isValid()) {
 </code></pre>
 
     <p>
+        Use the <code>clearInvalid</code> method to remove any invalid inputs as well as the form result. 
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
+<!--
+formValidator.clearInvalid();
+
+if (!formValidator.isValid()) {
+   
+}
+-->
+</code></pre>
+
+
+    <p>
         Use the <code>form</code> method returns an object with all the key/values from the form. 
     </p>
 <pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
@@ -487,6 +505,9 @@ formValidator.showResult('success');
                         // Don't submit if the form if it is being submitted
                         if (Helper.hasClass(submitBtn, 'active')) return;
 
+                        // Clear all invalid input classes and form results
+                        formValidator.clearInvalid();
+
                         // Clear the timeout
                         clearTimeout(fakeAjax);
                         
@@ -571,6 +592,9 @@ function formHandler(e) {
     // Don't submit if the form if it is being submitted
     if (Helper.hasClass(submitBtn, 'active')) return;
 
+    // Clear all invalid input classes and form results
+    formValidator.clearInvalid();
+
     // Clear the timeout
     clearTimeout(fakeAjax);
     
@@ -654,8 +678,8 @@ function formHandler(e) {
 </footer>
 
 <div class="sidebar-overlay js-sidebar-overlay"></div>
-<script src="/build/js/hubble.min.js?v=1498553515"></script>
-<script src="/build/js/theme.min.js?v=1498553515"></script>
+<script src="/build/js/hubble.min.js?v=1505022138"></script>
+<script src="/build/js/theme.min.js?v=1505022138"></script>
 
 </body>
 

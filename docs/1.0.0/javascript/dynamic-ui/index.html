@@ -137,11 +137,11 @@
 		    	</li>
 		     
 		    </ul>
-		 					    <div class="title-wrap js-collapse active" data-collapse-target="components">
+		 					    <div class="title-wrap js-collapse " data-collapse-target="components">
 		        <h6>Components</h6>
 		        <span class="icon glyph-icon glyph-icon-chevron-down"></span>
 		    </div>
-		    <ul class="list-unstyled " id="components">
+		    <ul class="list-unstyled collapsed" id="components">
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/components/cards/">
 		    			Cards		    		</a>
@@ -219,16 +219,16 @@
 		    			Tooltips		    		</a>
 		    	</li>
 		    		    			    	<li>
-		    		<a class="active" href="/docs/1.0.0/components/waypoints/">
+		    		<a class="" href="/docs/1.0.0/components/waypoints/">
 		    			Waypoints		    		</a>
 		    	</li>
 		     
 		    </ul>
-		 					    <div class="title-wrap js-collapse " data-collapse-target="javascript">
+		 					    <div class="title-wrap js-collapse active" data-collapse-target="javascript">
 		        <h6>JavaScript</h6>
 		        <span class="icon glyph-icon glyph-icon-chevron-down"></span>
 		    </div>
-		    <ul class="list-unstyled collapsed" id="javascript">
+		    <ul class="list-unstyled " id="javascript">
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/introduction/">
 		    			Introduction		    		</a>
@@ -287,102 +287,248 @@
 	    </button>
 	</div>
 	<article class="docs-body">
-		<h1>Waypoints</h1>
-
+		<h1>Dynamic UI</h1>
 <p>
-    Waypoints provide a convenient to automatically scroll to content on a page. 
-    They also provide the ability to land at a particular element on page load via the <code>URL</code> hash.
+    Hubble's <code>DynamicUI</code> component provides a powerful module to quickly add and interact with dynamic <code>AJAX</code> 
+    loaded content.
 </p>
-
 <hr>
 
 <ul class="list-bullet">
-    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="example" data-waypoint-speed="400">Usage</a></li>
-    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="options" data-waypoint-speed="500">Options</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="introduction" data-waypoint-speed="400">Introduction</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="basic-usage" data-waypoint-speed="600">Basic Usage</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="advanced-usage" data-waypoint-speed="900">Advanced Usage</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="server-response" data-waypoint-speed="900">Server Response</a></li>
 </ul>
 
 <hr>
 
-<div class="row roof-xs floor-xs" data-waypoint="example">
-    <h2>Usage</h2>
+<div class="row roof-xs floor-xs" data-waypoint="introduction">
+    <h2>Introduction</h2>
     <p>
-        To setup a click-to-scroll event, simply add the <code>.js-waypoint-trigger</code> class to 
-        a clickable element, like a button
+        Before we look at using <code>DynamicUI</code> specifically, we should go over the concept as a whole. 
+        The idea with <code>DynamicUI</code> is to provide in interface to creating <code>DOM</code> changes that update content 
+        dynamically based on <code>DOM</code> <code>events</code>.
     </p>
-    <div class="code-content-example">
-        <button class="btn btn-primary js-waypoint-trigger" data-waypoint-target="scroll-target">
-            Scroll To Content
-        </button>
-        <div class="row floor-xs"></div>
-        <div data-waypoint="scroll-target">
-            <p>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
-                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae 
-                dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
-                sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-            </p>
+    <p>
+    	An example of this might be when a button is clicked that shows the user their shopping cart, a request is sent off to the server to retrieve the 
+    	user's cart contents. The server will respond with a <code>JSON</code> object which represents the data for the user's cart. 
+    	The <code>DOM</code> is then updated with the response from the server. 
+    	The advantage here is that you: 
+    	<ol>
+    		<li>Only load required <code>HTML</code> content that is necessary for the page over initial <code>GET</code> requests (smaller and faster page loads).</li>
+    		<li>Additional content can be loaded via <code>POST</code> based on events/and/or server conditions, when it is needed.</li>
+    		<li><code>POST</code> requests/responses to/from the server are very small and load quickly, as only the actual data is needed.  
+    		Rather than returning entire <code>HTML</code> <code>UI</code> as a string response.</li>
+    	</ol>
+    </p>
+    <p>
+        To recap the process works like this:
+        <ol>
+    		<li>Page is loaded.</li>
+    		<li>User clicks a button.</li>
+    		<li><code>JavaScript</code> makes a <code>POST</code> request to the server for some data.</li>
+    		<li>Server sends back a <code>JSON</code> response object with the dynamic data.</li>
+    		<li><code>JavaScript</code> is used to populate that content into the <code>DOM</code>.</li>
+    		<li>User sees the content.</li>
+    	</ol>
+    </p>
+</div>
+
+<hr>
+
+<div class="row roof-xs floor-xs" data-waypoint="basic-usage">
+	<h2>Basic usage</h2>
+    <p>
+        The example below demonstrates a very simple example of dynamically changing some content.
+    </p>
+
+	<div class="code-content-example">
+		<div class="card" style="width: 300px;">
+            <img class="card-img-top" data-src="holder.js/100px100/" alt="100%x180" style="height: 180px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15a63dd608b%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15a63dd608b%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22118.0859375%22%20y%3D%2297.2%22%3E318x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">
+            <div class="card-block">
+                <h5 class="card-title" id="card-title-1">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('card-title-1').innerHTML = 'Loaded From Server!';">Change The Title!</button>
+            </div>
         </div>
-    </div>
+	</div>
 <pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
 <!--
-<button class="btn btn-primary js-waypoint-trigger" data-waypoint-target="scroll-target">
-    Scroll To Content
-</button>
-<div data-waypoint="scroll-target">
+<div class="card js-wrapper-el">
     ...
+    <h5 class="card-title js-title-el" id="card-title-1">...</h5>
+    ...
+    <button type="button" class="btn btn-primary js-button-el">Change The Title!</button>
 </div>
+
+<script  type="text/javascript">
+	var options =
+	{
+		// The node selector that triggers the Ajax call
+	    'trigger' : '.js-button-el',
+
+	    // The event name that triggers the event
+	    'event' : 'click',
+
+	    // The URL to send the POST request to
+	    'url' : window.location.origin + '/foo/',
+
+	    // The parent selector that houses the dynamic child nodes
+	    'target' : '.js-wrapper-el',
+	
+		// Array of class-name selectors along with the key
+		// that contains the content in the JSON response object
+	    'classes' : 
+	    [
+	        { 
+	            'class' : '.js-title-el',
+	            'key'   : 'title',
+	        }
+	    ],
+	};
+
+	var component = Container.get('DynamicUI', options);
+</script>
+-->
+</code></pre>
+	<p>
+        The server here would return the following string as <code>JSON</code>:
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="javascript">
+<!-- 
+{"response":"valid","details":{"title":"Loaded From Server!"}}
 -->
 </code></pre>
 
-<blockquote class="bq-info">
-    Any element with a <code>data-waypoint</code> attribute provides the ability to land at that element on pageload using 
-    the <code>URL</code> hash. For example, <code>http://example.com#landhere</code> on pageload would scroll to the element with 
-    <code>data-waypoint="landhere"</code>.
-</blockquote>
+   <p>
+   	As you can see, the <code>classes</code> array loaded into the <code>DynamicUI</code> constructor represent 
+   	an array of the <code>class-name</code> selectors inside the <code>target</code> <code>node</code>, with the 
+   	<code>key</code> of the <code>JSON</code> data to load into the <code>node</code>.
+   </p>
 
 </div>
 
 <hr>
 
-<div class="row roof-xs floor-xs" data-waypoint="options">
-    <h2>Options</h2>
+<div class="row roof-xs floor-xs" data-waypoint="advanced-usage">
+	<h2>Advanced Usage</h2>
     <p>
-        You can specify the the animation speed as well as the animation <code>easing</code> via HTML <code>data-</code> attributes on the click-target. 
-        <code>data-waypoint-speed</code> sets the scroll animation in milliseconds, 
-        while <code>data-waypoint-easing</code> sets the scroll animation easing via a valid <code>CSS</code> easing property.
+        The following example demonstrates the <code>DynamicUI</code> component with all available options
     </p>
-    <div class="code-content-example">
-        <button class="btn btn-primary js-waypoint-trigger" 
-            data-waypoint-target="scroll-target-1"
-            data-waypoint-speed="500"
-            data-waypoint-easing="ease-out">
-            Scroll To Content
-        </button>
-        <div class="row floor-xs"></div>
-        <div data-waypoint="scroll-target-1">
-            <p>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
-                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae 
-                dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
-                sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-            </p>
-        </div>
-    </div>
-<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="JavaScript">
 <!--
-<button class="btn btn-primary js-waypoint-trigger" 
-    data-waypoint-target="scroll-target"
-    data-waypoint-speed="500"
-    data-waypoint-easing="ease-out">
-    Scroll To Content
-</button>
-<div data-waypoint="scroll-target">
-    ...
+var options =
+{
+	// The node selector that triggers the Ajax call
+    'trigger' : '.js-button-el',
+
+    // The event name that triggers the event
+    'event' : 'click',
+
+    // The URL to send the POST request to
+    'url' : window.location.origin + '/foo/',
+
+    // The parent selector that houses the dynamic child nodes
+    'target' : '.js-wrapper-el',
+	
+	// The form object to send with the POST request (optional)
+    'form' : {'token' : 'secret token'},
+	
+	// Arguments to pass to 'onRender' callback
+    'onRenderArgs' : ['param1', 'param2'],
+	
+	// Callback to apply after successful POST request and DOM change (optional)
+    'onRender' : function callbackName(serverResponse, param1, parm2) { console.log(this); /* = target */ },
+
+    // Arguments to pass to 'onError' callback
+    'onErrorArgs' : ['param1', 'param2'],
+	
+	// Callback to apply when there server sends and error response or an invalid JSON
+    'onError' : function callbackName(serverResponse, param1, parm2) { console.log(this); /* = target */ },
+
+	// Array of class-name selectors along with the key
+	// that contains the content in the JSON response object
+    'classes' : 
+    [
+        { 
+            'class' : '.js-title-el',
+            'key'   : 'title',
+        },
+        { 
+            'class' : '.js-body-el',
+            'key'   : 'body',
+        }
+    ],
+};
+
+var component = Container.get('DynamicUI', options);
+-->
+</code></pre>
 </div>
+
+<hr>
+
+<div class="row roof-xs floor-xs" data-waypoint="server-response">
+	<h2>Server Response</h2>
+    <p>
+        Your server must send a <code>JSON</code> response object with the <code>response</code> key set to 
+        <code>valid</code> for a valid response and the data as an object in the <code>details</code> key. 
+        On a <code>PHP</code> server that would look like this:
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="php">
+<!--
+echo json_encode([
+	'response' => 'valid',
+	'details'  =>
+		[
+			'title' => 'Dynamic Title Text'
+			'body'  => 'Dynamic body copy.',
+		],
+]);
 -->
 </code></pre>
 
-</div>	</article>
+	<p>
+        To send an invalid response, either return a <code>404</code> or set the <code>response</code> key to anything other than <code>valid</code>:
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="php">
+<!--
+echo json_encode([
+	'response' => 'invalid',
+	'details'  => []
+]);
+-->
+</code></pre>
+	
+	<p>
+        This will trigger the optional <code>onError</code> event callback (if provided via the options). You can use this to insert fallback content.
+    </p>
+
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="JavaScript">
+<!--
+var options =
+{
+    'onErrorArgs' : [titleEl, bodyEl],
+	
+    'onError' : function callbackName(serverResponse, titleEl, bodyEl)
+    {
+    	var target = this;
+     	
+     	titleEl.innerHTML = 'Opps!';
+
+     	bodyEl.innerHTML = 'There was an error processing your request.';
+    }
+};
+-->
+</code></pre>
+
+</div>
+
+<hr>
+
+	</article>
 </div></div>
 </div>
 
