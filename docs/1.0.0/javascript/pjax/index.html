@@ -83,11 +83,11 @@
    <div class="container-fluid main-container">
 	<div class="col col-12 col-md-3 gutter-md-xl gutter-md-r">
 	<div class="doc-menu js-docs-menu">
-							    <div class="title-wrap js-collapse active" data-collapse-target="getting-started">
+							    <div class="title-wrap js-collapse " data-collapse-target="getting-started">
 		        <h6>Getting started</h6>
 		        <span class="icon glyph-icon glyph-icon-chevron-down"></span>
 		    </div>
-		    <ul class="list-unstyled " id="getting-started">
+		    <ul class="list-unstyled collapsed" id="getting-started">
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/getting-started/introduction/">
 		    			Introduction		    		</a>
@@ -101,7 +101,7 @@
 		    			Project setup		    		</a>
 		    	</li>
 		    		    			    	<li>
-		    		<a class="active" href="/docs/1.0.0/getting-started/boilerplate/">
+		    		<a class="" href="/docs/1.0.0/getting-started/boilerplate/">
 		    			Boilerplate		    		</a>
 		    	</li>
 		     
@@ -224,11 +224,11 @@
 		    	</li>
 		     
 		    </ul>
-		 					    <div class="title-wrap js-collapse " data-collapse-target="javascript">
+		 					    <div class="title-wrap js-collapse active" data-collapse-target="javascript">
 		        <h6>JavaScript</h6>
 		        <span class="icon glyph-icon glyph-icon-chevron-down"></span>
 		    </div>
-		    <ul class="list-unstyled collapsed" id="javascript">
+		    <ul class="list-unstyled " id="javascript">
 		    		    			    	<li>
 		    		<a class="" href="/docs/1.0.0/javascript/introduction/">
 		    			Introduction		    		</a>
@@ -291,37 +291,299 @@
 	    </button>
 	</div>
 	<article class="docs-body">
-		<h1>Boilerplate</h1>
-<hr>
+		<h1>Pjax</h1>
 <p>
-	Here is a barebones HTML template for starting any Hubble project.
+    Hubble's <code>Pjax</code> component provides a powerful module to quickly manage 
+    <a href="https://github.com/defunkt/jquery-pjax" target="_blank">Pjax</a> style events, DOM manipulation and web-app style functionality.
+</p>
 <hr>
 
+<ul class="list-bullet">
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="introduction" data-waypoint-speed="400">Introduction</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="html-usage" data-waypoint-speed="600">Invoke with HTML</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="js-usage" data-waypoint-speed="900">Invoke with JavaScript</a></li>
+    <li><a href="#" class="js-waypoint-trigger text-black" data-waypoint-target="server-response" data-waypoint-speed="900">Server Response</a></li>
+</ul>
+
+<hr>
+
+<div class="row roof-xs floor-xs" data-waypoint="introduction">
+    <h2>Introduction</h2>
+    <p>
+        Before we look at using the <code>Pjax</code> component specifically, we should go over the concept as a whole. 
+        Pjax works by fetching HTML from your server via ajax (GET) and replacing the 
+        content of a container element on your page with the loaded HTML. 
+        It then updates the current URL in the browser using pushState.
+    </p>
+    <p>
+    	An example of this might be a tab navigation that loads the content into the tab panel when the navigation link is clicked.
+    	The advantage here is that you: 
+    	<ol>
+    		<li>Only load required <code>HTML</code> content that is necessary for the page over initial <code>GET</code> requests (smaller and faster page loads).</li>
+    		<li>Additional content can be loaded via <code>GET</code> based on events/and/or server conditions, when it is needed.</li>
+    		<li>Pages can show different views depending on a URL query string or URL.</li>
+    	</ol>
+    </p>
+    <p>
+        To recap the process works like this:
+        <ol>
+    		<li>Page is loaded.</li>
+    		<li>An event (like clicking a button) trigger the <code>Pjax</code> module.</li>
+    		<li><code>JavaScript</code> makes a <code>GET</code> request to the server for the URL, with the <code>X-PJAX</code> header set to true so the server knows to only return the required data (not the whole page).</li>
+    		<li>Server sends back a valid <code>HTML</code> response.</li>
+    		<li><code>JavaScript</code> appends the response into the <code>DOM</code>.</li>
+    		<li>User sees the content.</li>
+    	</ol>
+    </p>
+
+    <blockquote class="bq-info">
+        <p>When the module loads content it will check the currently loaded scripts and compare them with any new scripts from the response content. 
+        If any new scripts are found they will be loaded once.</p>
+    </blockquote>
+
+</div>
+
+<hr>
+
+<div class="row roof-xs floor-xs" data-waypoint="html-usage">
+	<h2>Basic usage</h2>
+    <p>
+        You can invoke the <code>Pjax</code> via <code>HTML</code> for a fast and easy setup
+    </p>
+
+	<div class="code-content-example">
+        <ul class="tab-nav js-tab-nav">
+            <li><a href="#" class="active js-pjax-link" data-tab="panel-1" 
+            	data-pjax-href="/docs/1.0.0/javascript/pjax/tab-1.html" 
+            	data-pjax-target="panel-1"
+            	data-pjax-title="Pjax Example - Tab 1" 
+            	data-pjax-state-change="false" 
+            	data-pjax-single-request="true"
+         		>Tab 1</a></li>
+            <li><a href="#" class="js-pjax-link" data-tab="panel-2"
+            	data-pjax-href="/docs/1.0.0/javascript/pjax/tab-2.html" 
+            	data-pjax-target="panel-2"
+            	data-pjax-title="Pjax Example - Tab 2" 
+            	data-pjax-state-change="false" 
+            	data-pjax-single-request="true"
+            	>Tab 2</a></li>
+            <li><a href="#" class="js-pjax-link" data-tab="panel-3"
+            	data-pjax-href="/docs/1.0.0/javascript/pjax/tab-3.html" 
+            	data-pjax-target="panel-3"
+            	data-pjax-title="Pjax Example - Tab 3" 
+            	data-pjax-state-change="false" 
+            	data-pjax-single-request="true"
+            >Tab 3</a></li>
+        </ul>
+        <div class="tab-panels-wrap js-tab-panels-wrap">
+            <div class="tab-panel active" data-tab-panel="panel-1" id="panel-1">
+                <h3>Panel 1</h3>
+                <p>
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
+                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae 
+                dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
+                sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+                </p>
+            </div>
+            <div class="tab-panel" data-tab-panel="panel-2" id="panel-2">  
+            </div>
+            <div class="tab-panel" data-tab-panel="panel-3" id="panel-3">
+            </div>
+        </div>
+    </div>
 <pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
 <!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hubble 101 Template</title>
-<link rel="stylesheet" href="css/hubble.min.css">
-</head>
-<body>
-    <div class="page-container">
-    
-        <h1>Hello, world!</h1>
-
-    </div>
-    <footer class="sticky-footer">
-
-    </footer>
-    <script src="js/hubble.min.js"></script>
-  </body>
-</html>
+<ul class="tab-nav js-tab-nav">
+	<li><a href="#" class="active js-pjax-link" data-tab="panel-1" 
+		data-pjax-href="/docs/1.0.0/javascript/pjax/tab-1.html" 
+		data-pjax-target="panel-1"
+		data-pjax-title="Pjax Example - Tab 1" 
+		data-pjax-state-change="false" 
+		data-pjax-single-request="true"
+			>Tab 1</a></li>
+	<li>...</li>
+	<li>...</li>
+</ul>
+<div class="tab-panels-wrap js-tab-panels-wrap">
+	<div class="tab-panel active" data-tab-panel="panel-1" id="panel-1">
+	    <h3>Panel 1</h3>
+	    <p>
+	    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
+	    totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae 
+	    dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
+	    sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+	    </p>
+	</div>
+	...
+</div>
 -->
-</code></pre>	</article>
+</code></pre>
+	<p>
+     	The <code>data-pjax-href</code> attribute specifies the target <code>URL</code> to send the request to. This can be 
+     	a relative or absolute link:
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+<!--
+	<a class="js-pjax-link" data-pjax-href="http://example.com/foo-bar/">...</a>
+	<a class="js-pjax-link" data-pjax-href="example.com/foo-bar/">...</a> 
+	<a class="js-pjax-link" data-pjax-href="/foo-bar">...</a> 
+-->
+</code></pre>
+
+	<p>
+     	The <code>data-pjax-target</code> attribute specifies the <code>id</code> of target <code>node</code> to append the request response into:
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+<!--
+	<a class="js-pjax-link" data-pjax-target="id-of-target-node">...</a>
+-->
+</code></pre>
+
+	<p>
+     	The <code>data-pjax-title</code> is an optional parameter to set the new title if when changes. 
+     	Note that if your response returns a <code>&lt;title&gt;</code> element, that title will always be used. 
+     	If neither are provided the document's current <code>title</code> will not change.
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+<!--
+	<a class="js-pjax-link" data-pjax-target="id-of-target-node">...</a>
+-->
+</code></pre>
+
+	<p>
+     	The <code>data-pjax-state-change</code> is an optional parameter on 
+     	whether on not the event should trigger a <a href="https://developer.mozilla.org/en-US/docs/Web/Events/statechange" target="_blank">state change.</a>
+     	This defaults to <code>FALSE</code> if not provided.
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+<!--
+	<a class="js-pjax-link" data-pjax-state-change="true">...</a>
+-->
+</code></pre>
+
+<p>
+     	The <code>data-pjax-single-request</code> is an optional parameter on 
+     	which specifies if the request should only be sent the first time the event is clicked. 
+     	This defaults to <code>FALSE</code> if not provided.
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+<!--
+	<a class="js-pjax-link" data-pjax-single-request="true">...</a>
+-->
+</code></pre>
+
+</div>
+
+<hr>
+
+<div class="row roof-xs floor-xs" data-waypoint="js-usage">
+	<h2>JavaScript Usage</h2>
+    <p>
+    	You can invoke a <code>Pjax</code> request directly via <code>JavaScript</code>:
+    </p>
+
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="JavaScript">
+<!--
+// URL to send the request to
+var url = 'https://example.com/foo?tab=bar';
+
+// DOM target node id
+var target = 'my-id';
+
+// Page title (optional) (default false|document.title|response <title> element)
+var title = 'Foo Bar Tab';
+
+// Trigger a state change
+var stateChange = true;
+
+// Request over Pjax on first request only
+var singleRequest = true
+
+Hubble.require('Pjax').invoke(url, target, title, stateChange, singleRequest);
+-->
+</code></pre>
+</div>
+
+<hr>
+
+<div class="row roof-xs floor-xs" data-waypoint="server-response">
+	<h2>Server Response</h2>
+	<p>
+	<code>Pjax</code> requests are made via <code>GET</code>. Your server can differentiate these 
+	requests from other incoming <code>GET</code> requests by checking if the <code>X-PJAX</code> header is sent with the request.
+	</p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="php">
+<!--
+if (isset($_SERVER['X-PJAX']))
+{
+	# Send response
+}
+-->
+</code></pre>
+
+    <p>
+       When sending a response, your server must send valid <code>HTML</code>
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+<!--
+header('Content-Type: text/html; charset=utf-8');
+echo '<div>Hello World!</div>';
+-->
+</code></pre>
+	<p>
+     	Your server does not need to send an entire HTML <code>document</code>, only the content that will be appending into the 
+     	target node, or the target node itself.
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+<!--
+Hubble.require('Pjax').invoke('/foo?tab=bar', 'target-id');
+
+...
+
+header('Content-Type: text/html; charset=utf-8');
+
+echo '<div id="target-id">Hello World!</div>';
+-->
+</code></pre>
+	<p>
+     	If however, you send an entire HTML <code>document</code>, the module will parse the code and try to find the target node.
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+<!--
+Hubble.require('Pjax').invoke('/foo?tab=bar', 'target-id');
+
+...
+
+header('Content-Type: text/html; charset=utf-8');
+
+echo '
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;...&lt;/head&gt;
+&lt;body&gt;
+...
+&lt;div id=&quot;target-id&quot;&gt;Hello World!&lt;/div&gt;
+...
+&lt;/body&gt;
+&lt;/html&gt;
+';
+-->
+</code></pre>
+    <p>
+     	If the response contains a <code>&lt;title&gt;</code> element, and <code>stateChange</code> is set to true, 
+     	that title will be used (regardless of if a full HTML <code>document</code> is sent).
+    </p>
+<pre class="highlight-wrap"><code class="js-highlight" data-syntax="html">
+<!--
+echo '<title>Hello</title><div id="target-id">Hello World!</div>';
+-->
+</code></pre>
+
+</div>
+
+<hr>
+
+	</article>
 </div></div>
 </div>
 
